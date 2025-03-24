@@ -18,3 +18,10 @@ I have a laptop with a dedicated mute key that's super easy to hit, and I've hit
 
 ## Configuration
 The way this program works is by taking a tiny sample of audio (50 MS or so) from your default input device, getting the noise level (in DB), and comparing it to a configurable value. If the value is less than or equal to the configured value, the microphone is considered muted. By default, the value is -60 DB, but you can always change it. Open the config.ini file alongside the program and change the value of MinLevel in the Settings section to your desired value. You'll have to relaunch the program for this change to take effect.
+
+## Building
+This program uses Mingw32-make as its build system, and all the needed library and header files are included in the repository. As such, building is done with a simple makefile. If you have MinGW installed, a simple:
+```
+mingw32-make
+```
+from the repository's root should do it.
