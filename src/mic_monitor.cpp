@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <functional>
 #include <memory>
-#include "mic_monitor.h"
+#include "mic_monitor.hpp"
 #include <string>
 #include <UniversalSpeech.h>
 #include <windows.h>
@@ -35,9 +35,7 @@ void mic_monitor::data_callback(ma_device* device, void* output, const void* inp
 	if (!input) return;
 	const float* samples = static_cast<const float*>(input);
 	float peak = 0.0f;
-	for (ma_uint32 i = 0; i < frameCount; ++i) {
-		peak = std::max(peak, std::abs(samples[i]));
-	}
+	for (ma_uint32 i = 0; i < frameCount; ++i) peak = std::max(peak, std::abs(samples[i]));
 	self->last_level = peak;
 }
 
@@ -48,7 +46,7 @@ void mic_monitor::check_mic_state() const {
 	speechSay(status.c_str(), TRUE);
 }
 
-float mic_monitor::linear_to_decibel(float linear) const {
+inline float mic_monitor::linear_to_decibel(float linear) const {
 	return (linear > 0.0f) ? 20.0f * log10f(linear) : -144.0f;
 }
 

@@ -1,13 +1,13 @@
-#include "app.h"
+#include "app.hpp"
 #include <stdexcept>
 #include <windows.h>
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, PSTR, int) {
+int WINAPI WinMain(HINSTANCE instance, HINSTANCE, PSTR, int) {
 	try {
-		app app(hInstance);
+		app app(instance);
 		return app.run();
 	} catch (const std::exception& e) {
-		MessageBoxA(nullptr, e.what(), "Error", MB_ICONERROR);
+		MessageBox(nullptr, e.what(), "Error", MB_ICONERROR);
 		return 1;
 	}
 }

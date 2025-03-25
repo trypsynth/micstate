@@ -1,6 +1,6 @@
 CXX = g++
-CXXFLAGS = -std=c++20 -Iinclude
-LDFLAGS = -Llib -lUniversalSpeech -lKernel32 -lVersion -lPsapi -lshlwapi
+CXXFLAGS = -std=c++20 -Iinclude -Os -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -s -Wl,--subsystem,windows
+LDFLAGS = -Llib -lUniversalSpeech -lKernel32 -Wl,--gc-sections -s
 SRCS = $(wildcard src/*.cpp)
 OBJS = $(SRCS:src/%.cpp=obj/%.o)
 TARGET = micstate

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "mic_monitor.h"
-#include "tray_icon.h"
+#include "mic_monitor.hpp"
+#include "tray_icon.hpp"
 #include <windows.h>
 
 constexpr UINT ID_TRAY_ICON = 101;

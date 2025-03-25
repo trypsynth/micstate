@@ -1,7 +1,6 @@
-#include "app.h"
+#include "app.hpp"
 #include <memory>
 #include <stdexcept>
-#include "tray_icon.h"
 
 app::app(HINSTANCE hInstance) :instance{hInstance}, monitor{std::make_unique<mic_monitor>()} {
 	WNDCLASS wc{};

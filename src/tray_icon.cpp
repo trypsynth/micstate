@@ -1,5 +1,5 @@
-#include "app.h"
-#include "tray_icon.h"
+#include "app.hPP"
+#include "tray_icon.hPP"
 
 tray_icon::tray_icon(HWND hwnd, UINT id, HICON icon, const std::string& message) :hwnd{hwnd}, id{id} {
 	NOTIFYICONDATA nid{};
