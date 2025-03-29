@@ -2,14 +2,14 @@
 #include <memory>
 #include <stdexcept>
 
-app::app(HINSTANCE hInstance) :instance{hInstance}, monitor{std::make_unique<mic_monitor>()} {
+app::app(HINSTANCE inst) : instance{inst}, monitor{std::make_unique<mic_monitor>()} {
 	WNDCLASS wc{
 		.lpfnWndProc = wnd_proc,
 		.hInstance = instance,
 		.lpszClassName = "MicStateWNDClass",
 	};
 	RegisterClass(&wc);
-	hwnd = CreateWindow(wc.lpszClassName, nullptr, 0, 0, 0, 0, 0, nullptr, nullptr, hInstance, this);
+	hwnd = CreateWindow(wc.lpszClassName, nullptr, 0, 0, 0, 0, 0, nullptr, nullptr, instance, this);
 	if (!hwnd) throw std::runtime_error{"Failed to create window."};
 	icon = std::make_unique<tray_icon>(hwnd, LoadIcon(nullptr, IDI_APPLICATION), "MicState");
 	if (!RegisterHotKey(hwnd, ID_CHECK_HOTKEY, MOD_CONTROL | MOD_ALT | MOD_SHIFT, 'M')) throw std::runtime_error{"Failed to register hotkey."};

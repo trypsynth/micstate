@@ -9,7 +9,7 @@
 
 namespace fs = std::filesystem;
 
-mic_monitor::mic_monitor() :last_level{0.0} {
+mic_monitor::mic_monitor() : last_level{0.0} {
 	if (ma_context_init(nullptr, 0, nullptr, &context) != MA_SUCCESS) throw std::runtime_error{"Failed to initialize miniaudio context."};
 	ma_device_config config{ma_device_config_init(ma_device_type_capture)};
 	config.capture.format = ma_format_f32;
@@ -51,7 +51,7 @@ inline float mic_monitor::linear_to_decibel(float linear) const {
 }
 
 std::optional<int> mic_monitor::load_config() {
-	char min_level_str[16]{0};
+	char min_level_str[16] {0};
 	fs::path config_path = fs::current_path() / "config.ini";
 	if (GetPrivateProfileString("settings", "min_level", nullptr, min_level_str, sizeof(min_level_str), config_path.string().c_str()) > 0) return std::stoi(min_level_str);
 	return std::nullopt;

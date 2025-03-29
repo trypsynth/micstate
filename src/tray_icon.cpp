@@ -1,7 +1,7 @@
 #include "app.hPP"
 #include "tray_icon.hPP"
 
-tray_icon::tray_icon(HWND hwnd, HICON icon, const std::string& message) :hwnd{hwnd} {
+tray_icon::tray_icon(HWND hwnd, HICON icon, const std::string& message) : hwnd{hwnd} {
 	NOTIFYICONDATA nid{
 		.cbSize = sizeof(NOTIFYICONDATA),
 		.hWnd = hwnd,
