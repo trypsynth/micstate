@@ -15,7 +15,6 @@ public:
 	app(HINSTANCE hInstance);
 	~app();
 	int run();
-	void show_tray_menu();
 
 private:
 	HINSTANCE instance;
@@ -23,4 +22,5 @@ private:
 	std::unique_ptr<mic_monitor> monitor;
 	std::unique_ptr<tray_icon> icon;
 	static LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp);
+	void show_tray_menu();
 };

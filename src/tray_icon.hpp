@@ -10,5 +10,4 @@ public:
 
 private:
 	HWND hwnd;
-	UINT id;
 };

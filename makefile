@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++20 -Iinclude -Os -ffunction-sections -fdata-sections -fno-rtt
 LDFLAGS = -Llib -lUniversalSpeech -lKernel32 -Wl,--gc-sections -Wl,--subsystem,windows -s
 SRCS = $(wildcard src/*.cpp)
 OBJS = $(SRCS:src/%.cpp=obj/%.o)
-TARGET = micstate
+TARGET = bin/micstate
 
 .PHONY: all clean
 

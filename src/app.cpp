@@ -3,10 +3,11 @@
 #include <stdexcept>
 
 app::app(HINSTANCE hInstance) :instance{hInstance}, monitor{std::make_unique<mic_monitor>()} {
-	WNDCLASS wc{};
-	wc.lpfnWndProc = wnd_proc;
-	wc.hInstance = instance;
-	wc.lpszClassName = "MicStateWNDClass";
+	WNDCLASS wc{
+		.lpfnWndProc = wnd_proc,
+		.hInstance = instance,
+		.lpszClassName = "MicStateWNDClass",
+	};
 	RegisterClass(&wc);
 	hwnd = CreateWindow(wc.lpszClassName, nullptr, 0, 0, 0, 0, 0, nullptr, nullptr, hInstance, this);
 	if (!hwnd) throw std::runtime_error{"Failed to create window."};
@@ -29,8 +30,8 @@ int app::run() {
 
 LRESULT CALLBACK app::wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 	if (msg == WM_CREATE) {
-		auto createStruct = reinterpret_cast<LPCREATESTRUCT>(lp);
-		SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(createStruct->lpCreateParams));
+		auto create_struct = reinterpret_cast<LPCREATESTRUCT>(lp);
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(create_struct->lpCreateParams));
 	}
 	auto the_app = reinterpret_cast<app*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 	if (!the_app) return DefWindowProc(hwnd, msg, wp, lp);
