@@ -10,8 +10,7 @@ app::app(HINSTANCE hInstance) :instance{hInstance}, monitor{std::make_unique<mic
 	RegisterClass(&wc);
 	hwnd = CreateWindow(wc.lpszClassName, nullptr, 0, 0, 0, 0, 0, nullptr, nullptr, hInstance, this);
 	if (!hwnd) throw std::runtime_error{"Failed to create window."};
-	icon = LoadIcon(nullptr, IDI_APPLICATION);
-	trayicon = std::make_unique<tray_icon>(hwnd, ID_TRAY_ICON, icon, "MicState");
+	icon = std::make_unique<tray_icon>(hwnd, LoadIcon(nullptr, IDI_APPLICATION), "MicState");
 	if (!RegisterHotKey(hwnd, ID_CHECK_HOTKEY, MOD_CONTROL | MOD_ALT | MOD_SHIFT, 'M')) throw std::runtime_error{"Failed to register hotkey."};
 }
 
@@ -42,6 +41,9 @@ LRESULT CALLBACK app::wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
+		case WM_TRAYICON:
+			if (LOWORD(lp) == WM_RBUTTONUP) the_app->show_tray_menu();
+			break;
 		case WM_COMMAND:
 			if (LOWORD(wp) == ID_EXIT) PostQuitMessage(0);
 			break;
@@ -49,4 +51,13 @@ LRESULT CALLBACK app::wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 			return DefWindowProc(hwnd, msg, wp, lp);
 	}
 	return 0;
+}
+
+void app::show_tray_menu() {
+	auto h_menu = std::unique_ptr<std::remove_pointer_t<HMENU>, decltype(&DestroyMenu)>(CreatePopupMenu(), DestroyMenu);
+	AppendMenu(h_menu.get(), MF_STRING, ID_EXIT, "Exit");
+	POINT pt;
+	GetCursorPos(&pt);
+	SetForegroundWindow(hwnd);
+	TrackPopupMenu(h_menu.get(), TPM_RIGHTBUTTON, pt.x, pt.y, 0, hwnd, nullptr);
 }
