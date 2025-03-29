@@ -30,12 +30,12 @@ mic_monitor::~mic_monitor() {
 	ma_context_uninit(&context);
 }
 
-void mic_monitor::data_callback(ma_device* device, void* output, const void* input, ma_uint32 frameCount) {
+void mic_monitor::data_callback(ma_device* device, void* output, const void* input, ma_uint32 frame_count) {
 	mic_monitor* self = static_cast<mic_monitor*>(device->pUserData);
 	if (!input) return;
 	const float* samples = static_cast<const float*>(input);
 	float peak = 0.0f;
-	for (ma_uint32 i = 0; i < frameCount; ++i) peak = std::max(peak, std::abs(samples[i]));
+	for (ma_uint32 i = 0; i < frame_count; ++i) peak = std::max(peak, std::abs(samples[i]));
 	self->last_level = peak;
 }
 
