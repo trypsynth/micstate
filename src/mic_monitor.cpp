@@ -11,18 +11,13 @@ namespace fs = std::filesystem;
 
 mic_monitor::mic_monitor() : last_level{0.0} {
 	if (ma_context_init(nullptr, 0, nullptr, &context) != MA_SUCCESS) throw std::runtime_error{"Failed to initialize miniaudio context."};
-	ma_device_config config{ma_device_config_init(ma_device_type_capture)};
+	config = ma_device_config_init(ma_device_type_capture);
 	config.capture.format = ma_format_f32;
 	config.capture.channels = 1;
 	config.sampleRate = 44100;
 	config.dataCallback = data_callback;
 	config.pUserData = this;
-	if (ma_device_init(&context, &config, &device) != MA_SUCCESS) {
-		ma_context_uninit(&context);
-		throw std::runtime_error{"Failed to initialize miniaudio device."};
-	}
 	min_level = load_config().value_or(-60);
-	ma_device_start(&device);
 }
 
 mic_monitor::~mic_monitor() {
@@ -39,8 +34,13 @@ void mic_monitor::data_callback(ma_device* device, void* output, const void* inp
 	self->last_level = peak;
 }
 
-void mic_monitor::check_mic_state() const {
+void mic_monitor::check_mic_state() {
+	ma_device device;
+	if (ma_device_init(&context, &config, &device) != MA_SUCCESS) throw std::runtime_error{"Failed to initialize miniaudio device."};
+	ma_device_start(&device);
 	Sleep(50);
+	ma_device_stop(&device);
+	ma_device_uninit(&device);
 	int level = static_cast<int>(linear_to_decibel(last_level));
 	std::wstring status = (level <= min_level) ? L"Muted" : L"Unmuted";
 	speechSay(status.c_str(), TRUE);
