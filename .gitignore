@@ -1,4 +1,3 @@
 *.exe
-*.o
 *.zip
-obj/
+build/

@@ -5,9 +5,13 @@
 #include "mic_monitor.hpp"
 #include <string>
 #include <UniversalSpeech.h>
-#include <windows.h>
 
 namespace fs = std::filesystem;
+
+template <typename T>
+T my_max(T a, T b) {
+    return (a > b) ? a : b;
+}
 
 mic_monitor::mic_monitor() : last_level{0.0} {
 	if (ma_context_init(nullptr, 0, nullptr, &context) != MA_SUCCESS) throw std::runtime_error{"Failed to initialize miniaudio context."};
@@ -30,7 +34,7 @@ void mic_monitor::data_callback(ma_device* device, void* output, const void* inp
 	if (!input) return;
 	const float* samples = static_cast<const float*>(input);
 	float peak = 0.0f;
-	for (ma_uint32 i = 0; i < frame_count; ++i) peak = std::max(peak, std::abs(samples[i]));
+	for (ma_uint32 i = 0; i < frame_count; ++i) peak = my_max(peak, std::fabs(samples[i]));
 	self->last_level = peak;
 }
 

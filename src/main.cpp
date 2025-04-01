@@ -1,6 +1,5 @@
 #include "app.hpp"
 #include <stdexcept>
-#include <windows.h>
 
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE, PSTR, int) {
 	try {
