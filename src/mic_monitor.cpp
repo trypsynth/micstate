@@ -8,11 +8,6 @@
 
 namespace fs = std::filesystem;
 
-template <typename T>
-T my_max(T a, T b) {
-    return (a > b) ? a : b;
-}
-
 mic_monitor::mic_monitor() : last_level{0.0} {
 	if (ma_context_init(nullptr, 0, nullptr, &context) != MA_SUCCESS) throw std::runtime_error{"Failed to initialize miniaudio context."};
 	config = ma_device_config_init(ma_device_type_capture);
@@ -34,7 +29,7 @@ void mic_monitor::data_callback(ma_device* device, void* output, const void* inp
 	if (!input) return;
 	const float* samples = static_cast<const float*>(input);
 	float peak = 0.0f;
-	for (ma_uint32 i = 0; i < frame_count; ++i) peak = my_max(peak, std::fabs(samples[i]));
+	for (ma_uint32 i = 0; i < frame_count; ++i) peak = (std::max)(peak, std::fabs(samples[i]));
 	self->last_level = peak;
 }
 
