@@ -14,7 +14,7 @@ private:
 	ma_device device;
 	ma_device_config config;
 	mutable float last_level;
-	int min_level;
+	int min_level, sleep_time;
 
 	float linear_to_decibel(float linear) const;
 	std::optional<int> load_config();

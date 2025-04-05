@@ -5,6 +5,7 @@
 #include "mic_monitor.hpp"
 #include <string>
 #include <UniversalSpeech.h>
+#include <windows.h>
 
 namespace fs = std::filesystem;
 
@@ -34,6 +35,7 @@ void mic_monitor::data_callback(ma_device* device, void* output, const void* inp
 }
 
 void mic_monitor::check_mic_state() {
+	timeBeginPeriod(1);
 	ma_device device;
 	if (ma_device_init(&context, &config, &device) != MA_SUCCESS) throw std::runtime_error{"Failed to initialize miniaudio device."};
 	ma_device_start(&device);
@@ -43,6 +45,7 @@ void mic_monitor::check_mic_state() {
 	int level = static_cast<int>(linear_to_decibel(last_level));
 	std::wstring status = (level <= min_level) ? L"Muted" : L"Unmuted";
 	speechSay(status.c_str(), TRUE);
+	timeEndPeriod(1);
 }
 
 inline float mic_monitor::linear_to_decibel(float linear) const {

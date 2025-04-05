@@ -8,5 +8,5 @@ link_directories(lib)
 file(GLOB SRCS "src/*.cpp")
 
 add_executable(micstate WIN32 ${SRCS})
-target_link_libraries(micstate PRIVATE Kernel32 Psapi UniversalSpeechStatic Version)
+target_link_libraries(micstate PRIVATE Kernel32 Psapi UniversalSpeechStatic Version winmm)
 set_target_properties(micstate PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
