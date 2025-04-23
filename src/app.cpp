@@ -48,8 +48,7 @@ LRESULT CALLBACK app::wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 		case WM_COMMAND:
 			if (LOWORD(wp) == ID_EXIT) PostQuitMessage(0);
 			break;
-		default:
-			return DefWindowProc(hwnd, msg, wp, lp);
+		default: return DefWindowProc(hwnd, msg, wp, lp);
 	}
 	return 0;
 }

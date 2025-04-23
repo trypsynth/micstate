@@ -1,5 +1,5 @@
-#include "app.hPP"
-#include "tray_icon.hPP"
+#include "app.hpp"
+#include "tray_icon.hpp"
 
 tray_icon::tray_icon(HWND hwnd, HICON icon, const std::string& message) : hwnd{hwnd} {
 	NOTIFYICONDATA nid{
@@ -10,7 +10,8 @@ tray_icon::tray_icon(HWND hwnd, HICON icon, const std::string& message) : hwnd{h
 		.uCallbackMessage = WM_TRAYICON,
 		.hIcon = icon,
 	};
-	strncpy_s(nid.szTip, message.data(), sizeof(nid.szTip) - 1);
+	std::strncpy(nid.szTip, message.c_str(), sizeof(nid.szTip) - 1);
+	nid.szTip[sizeof(nid.szTip) - 1] = '\0';
 	Shell_NotifyIcon(NIM_ADD, &nid);
 }
 
