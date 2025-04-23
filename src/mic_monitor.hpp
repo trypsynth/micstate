@@ -7,6 +7,10 @@ class mic_monitor {
 public:
 	mic_monitor();
 	~mic_monitor();
+	mic_monitor(const mic_monitor&) = delete;
+	mic_monitor& operator=(const mic_monitor&) = delete;
+	mic_monitor(mic_monitor&&) = delete;
+	mic_monitor& operator=(mic_monitor&&) = delete;
 	void check_mic_state();
 
 private:
