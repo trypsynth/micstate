@@ -39,13 +39,12 @@ jobs:
       - name: Package
         shell: pwsh
         run: |
-          New-Item -ItemType Directory dist/package -Force | Out-Null
-          Copy-Item build/micstate.exe, README.md, LICENSE.md dist/package
-          Compress-Archive -Path dist/package/* -DestinationPath dist/micstate-windows-${{ matrix.arch }}.zip
+          New-Item -ItemType Directory dist -Force | Out-Null
+          Copy-Item build/micstate.exe dist/micstate-${{ matrix.arch }}.exe
       - uses: actions/upload-artifact@v6
         with:
           name: micstate-windows-${{ matrix.arch }}
-          path: dist/*.zip
+          path: dist/*.exe
           if-no-files-found: error
 
   release:
@@ -65,4 +64,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" dist/*.zip --verify-tag --title "Micstate ${RELEASE_TAG#v}" --generate-notes
+        run: gh release create "$RELEASE_TAG" dist/*.exe --verify-tag --title "Micstate ${RELEASE_TAG#v}" --generate-notes
