@@ -51,7 +51,6 @@ mic_monitor::mic_monitor() : last_level{0.0f} {
 }
 
 mic_monitor::~mic_monitor() {
-	ma_device_uninit(&device);
 	ma_context_uninit(&context);
 }
 
