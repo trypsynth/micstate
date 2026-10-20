@@ -4,6 +4,10 @@ set(VCPKG_MANIFEST_DIR "${CMAKE_SOURCE_DIR}/vcpkg")
 set(VCPKG_TARGET_TRIPLET "x64-windows-static" CACHE STRING "Vcpkg triplet")
 project(micstate LANGUAGES CXX)
 
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING "Build type" FORCE)
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -16,6 +20,22 @@ find_package(prism CONFIG REQUIRED)
 
 file(GLOB SRCS "src/*.cpp")
 add_executable(micstate WIN32 ${SRCS})
+target_compile_definitions(micstate PRIVATE
+	MA_NO_DECODING MA_NO_ENCODING MA_NO_RESOURCE_MANAGER
+	MA_NO_NODE_GRAPH MA_NO_ENGINE MA_NO_GENERATION)
+
+include(CheckIPOSupported)
+check_ipo_supported(RESULT MICSTATE_IPO_SUPPORTED)
+if(MICSTATE_IPO_SUPPORTED)
+	set_target_properties(micstate PROPERTIES
+		INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE
+		INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL TRUE)
+endif()
+
+if(MSVC)
+	target_compile_options(micstate PRIVATE "$<$<CONFIG:Release,MinSizeRel>:/Gy;/Gw>")
+	target_link_options(micstate PRIVATE "$<$<CONFIG:Release,MinSizeRel>:/OPT:REF;/OPT:ICF>")
+endif()
 target_include_directories(micstate PRIVATE ${MINIAUDIO_INCLUDE_DIRS})
 target_link_libraries(micstate PRIVATE Kernel32 Psapi prism::prism Version winmm)
 

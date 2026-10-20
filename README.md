@@ -26,10 +26,13 @@ From an x64 Native Tools Command Prompt, run:
 ```bat
 git submodule update --init --recursive
 vcpkg\bin\bootstrap-vcpkg.bat -disableMetrics
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=MinSizeRel
 cmake --build build
 ```
 
 CMake installs miniaudio and the official `ethindp-prism` vcpkg port automatically.
 The executable is written to `build\micstate.exe`. Speech uses Prism to select
 an available screen reader or text-to-speech backend.
+
+`MinSizeRel` optimizes the executable for size and is the default for a fresh
+single-configuration build. Use `-DCMAKE_BUILD_TYPE=Debug` for debugging.
