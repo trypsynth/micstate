@@ -1,6 +1,10 @@
 # Micstate
 Simple C++ program to speak the muted state of your default input device using a global hotkey.
 
+Download a portable Windows x64 or ARM64 ZIP from the
+[latest release](https://github.com/trypsynth/micstate/releases/latest), extract
+it, and run `micstate.exe`. Windows 10 or later is required.
+
 ## Why?
 The current way of determining if an input device is muted or not on Windows is incredibly annoying:
 
@@ -36,3 +40,7 @@ an available screen reader or text-to-speech backend.
 
 `MinSizeRel` optimizes the executable for size and is the default for a fresh
 single-configuration build. Use `-DCMAKE_BUILD_TYPE=Debug` for debugging.
+
+GitHub Actions builds both architectures on pushes and pull requests. Pushing
+a version tag such as `v2.1` publishes both portable ZIPs as a GitHub release
+after both builds succeed. Each ZIP includes the executable, README, and license.
