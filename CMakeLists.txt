@@ -7,14 +7,17 @@ project(micstate LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC AND VCPKG_TARGET_TRIPLET MATCHES "-static$")
+	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 find_path(MINIAUDIO_INCLUDE_DIRS "miniaudio.h")
-find_package(universalspeech CONFIG REQUIRED)
+find_package(prism CONFIG REQUIRED)
 
 file(GLOB SRCS "src/*.cpp")
 add_executable(micstate WIN32 ${SRCS})
 target_include_directories(micstate PRIVATE ${MINIAUDIO_INCLUDE_DIRS})
-target_compile_definitions(micstate PRIVATE UNIVERSAL_SPEECH_STATIC)
-target_link_libraries(micstate PRIVATE Kernel32 Psapi universalspeech::universalspeech Version winmm)
+target_link_libraries(micstate PRIVATE Kernel32 Psapi prism::prism Version winmm)
 
 file(GLOB DLLS "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin/*.dll")
 set(LOCAL_DLLS "")

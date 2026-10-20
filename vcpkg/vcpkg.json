@@ -4,9 +4,8 @@
   "dependencies": [
     "miniaudio",
     {
-      "name": "universalspeech",
+      "name": "ethindp-prism",
       "platform": "windows"
     }
-  ],
-  "builtin-baseline": "3bdaa9b42070c241c1bdb02b4cf01f90de579738"
+  ]
 }

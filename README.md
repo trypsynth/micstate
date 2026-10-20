@@ -20,8 +20,16 @@ I have a laptop with a dedicated mute key that's super easy to hit, and I've hit
 The way this program works is by taking a tiny sample of audio (50 MS or so) from your default input device, getting the noise level (in DB), and comparing it to a configurable value. If the value is less than or equal to the configured value, the microphone is considered muted. By default, the value is -60 DB, but you can always change it. Open the config.ini file alongside the program and change the value of MinLevel in the Settings section to your desired value. You'll have to relaunch the program for this change to take effect.
 
 ## Building
-This program uses Mingw32-make as its build system, and all the needed library and header files are included in the repository. As such, building is done with a simple makefile. If you have MinGW installed, a simple:
+Install Visual Studio Build Tools with the C++ workload, CMake, and Ninja.
+From an x64 Native Tools Command Prompt, run:
+
+```bat
+git submodule update --init --recursive
+vcpkg\bin\bootstrap-vcpkg.bat -disableMetrics
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
-mingw32-make
-```
-from the repository's root should do it.
+
+CMake installs miniaudio and the official `ethindp-prism` vcpkg port automatically.
+The executable is written to `build\micstate.exe`. Speech uses Prism to select
+an available screen reader or text-to-speech backend.

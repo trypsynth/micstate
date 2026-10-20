@@ -22,6 +22,8 @@
 #pragma once
 #include <miniaudio.h>
 #include <optional>
+#include <memory>
+#include <prism.h>
 
 class mic_monitor {
 public:
@@ -34,6 +36,8 @@ public:
 	void check_mic_state();
 
 private:
+	std::unique_ptr<PrismContext, decltype(&prism_shutdown)> speech{nullptr, &prism_shutdown};
+	std::unique_ptr<PrismBackend, decltype(&prism_backend_free)> speech_backend{nullptr, &prism_backend_free};
 	ma_context context;
 	ma_device device;
 	ma_device_config config;
